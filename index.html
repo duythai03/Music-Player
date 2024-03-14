@@ -360,11 +360,25 @@
           }, 300);
         },
         loadConfig: function () {
-          this.isRandom = this.config.isRandom;
-          this.isRepeat = this.config.isRepeat;
+          // Kiểm tra nếu chưa có dữ liệu trong localStorage thì gán giá trị mặc định là false
+          if (!localStorage.getItem(PLAYRT_STORAGE_KEY)) {
+            this.isRandom = false;
+            this.isRepeat = false;
+            localStorage.setItem(
+              PLAYRT_STORAGE_KEY,
+              JSON.stringify(this.config)
+            );
+          } else {
+            // Nếu đã có dữ liệu trong localStorage, lấy giá trị từ đó
+            this.isRandom = this.config.isRandom;
+            this.isRepeat = this.config.isRepeat;
+          }
+
+          // Tắt class active nếu giá trị là false
           randomBtn.classList.toggle("active", this.isRandom);
           repeatBtn.classList.toggle("active", this.isRepeat);
         },
+
         loadCurrentIndex: function () {
           const storedIndex = localStorage.getItem("currentIndex");
           if (storedIndex !== null) {
